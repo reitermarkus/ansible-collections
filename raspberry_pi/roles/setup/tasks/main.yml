@@ -1,0 +1,19 @@
+- name: Enable unattended upgrades
+  include_role:
+    name: jnv.unattended-upgrades
+- name: Set time zone
+  when: timezone
+  community.general.timezone:
+    name: '{{ timezone }}'
+- name: Set up hostname
+  copy:
+    content: localhost
+    dest: /etc/hostname
+  notify: Reboot
+- name: Set up watchdog
+  when: watchdog
+  include_role:
+    name: reitermarkus.raspberry_pi.watchdog
+- name: Set up peripherals
+  include_role:
+    name: reitermarkus.raspberry_pi.peripherals

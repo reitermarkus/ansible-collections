@@ -1,0 +1,4 @@
+- name: Reboot
+  reboot:
+    connect_timeout: 5
+    post_reboot_delay: 30

@@ -1,0 +1,37 @@
+- name: Set up SPI
+  when: spi == True or spi == False
+  lineinfile:
+    regexp: dtparam=spi=
+    line: dtparam=spi={{ "on" if spi else "off" }}
+    dest: /boot/config.txt
+  notify: Reboot
+- name: Set up I2C module
+  when: i2c == True or i2c == False
+  lineinfile:
+    line: i2c-dev
+    dest: /etc/modules
+    state: '{{ "present" if spi else "absent" }}'
+  notify: Reboot
+- name: Set up I2C
+  when: i2c == True or i2c == False
+  lineinfile:
+    regexp: dtparam=i2c_arm=
+    line: dtparam=i2c_arm={{ "on" if i2c else "off" }}
+    dest: /boot/config.txt
+  notify: Reboot
+- name: Set up serial
+  when: serial == True or serial == False
+  lineinfile:
+    regexp: enable_uart=
+    line: enable_uart={{ "1" if serial else "0" }}
+    dest: /boot/config.txt
+  notify: Reboot
+- name: Set up serial console
+  when: serial_console == True or serial_console == False
+  lineinfile:
+    path: /boot/cmdline.txt
+    backrefs: true
+    regexp: '{{ "^((?!.*\bconsole=serial0\b[^ ]*\b(?: |$)).*?) *$" if serial_console else "^(.* +|)(?:\bconsole=serial0\b[^ ]*\b *)(.*?)$" }}'
+    line: '{{ "console=serial0,115200 \1" if serial_console else "\1\2" }}'
+    validate: grep -q 'root=' %s
+  notify: Reboot

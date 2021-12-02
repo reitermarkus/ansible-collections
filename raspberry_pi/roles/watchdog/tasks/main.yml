@@ -1,0 +1,11 @@
+- name: Enable watchdog module
+  lineinfile:
+    path: /etc/modules
+    line: bcm2835_wdt
+  notify: Reboot
+- name: Install watchdog
+  include_role:
+    name: whiskerlabs.watchdog
+  vars:
+    watchdog_ping_addrs:
+      - "{{ ansible_default_ipv4['gateway'] }}"
