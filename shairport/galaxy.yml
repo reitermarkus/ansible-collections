@@ -1,0 +1,17 @@
+namespace: reitermarkus
+name: shairport
+version: 0.1.0
+readme: README.md
+authors:
+  - Markus Reiter <me@reitermark.us>
+description: Collection for installing shairport-sync.
+license:
+  - MIT
+  - GPL-2.0-or-later
+tags: []
+dependencies: {}
+repository: https://github.com/reitermarkus/ansible-collections
+documentation: https://github.com/reitermarkus/ansible-collections
+homepage: https://github.com/reitermarkus/ansible-collections
+issues: https://github.com/reitermarkus/ansible-collections/issues
+build_ignore: []
