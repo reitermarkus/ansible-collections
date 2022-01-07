@@ -12,7 +12,12 @@
   copy:
     content: localhost
     dest: /etc/hostname
-  notify: Reboot
+  register: hostname
+- name: Restart network
+  service:
+    name: networking
+    state: restarted
+  when: hostname.changed
 - name: Set up watchdog
   when: watchdog
   include_role:
