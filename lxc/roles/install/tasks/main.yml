@@ -8,26 +8,26 @@
 - name: Configure lxc-net bridge
   lineinfile:
     regex: USE_LXC_BRIDGE=
-    line: USE_LXC_BRIDGE="{{ 'false' if lxc_host_bridge_ports else 'true' }}"
+    line: USE_LXC_BRIDGE="{{ 'false' if bridge_ports else 'true' }}"
     path: /etc/default/lxc-net
 - name: Delete lxc host bridge
   file:
     path: /etc/network/interfaces.d/lxc
     state: absent
   register: delete_lxc_host_bridge
-  when: not lxc_host_bridge_ports
+  when: not bridge_ports
 - name: Create lxc host bridge
   copy:
     content: |
       auto lxcbr0
       iface lxcbr0 inet dhcp
-        bridge_ports {{ lxc_host_bridge_ports | join(' ') }}
+        bridge_ports {{ bridge_ports | join(' ') }}
         bridge_stp 0
         bridge_fd 0
         bridge_maxwait 0
     dest: /etc/network/interfaces.d/lxc
   register: create_lxc_host_bridge
-  when: lxc_host_bridge_ports
+  when: bridge_ports
 - name: Check if dhcpcd config exists
   stat:
     path: /etc/dhcpcd.conf
@@ -37,10 +37,10 @@
     regex: denyinterfaces
     insertafter: '^ *#.*dhcpcd\.conf\(5\)'
     firstmatch: yes
-    line: denyinterfaces {{ lxc_host_bridge_ports | join(' ') }} lxcbr0
+    line: denyinterfaces {{ bridge_ports | join(' ') }} lxcbr0
     path: /etc/dhcpcd.conf
   register: dhcpcd_conf
-  when: lxc_host_bridge_ports and dhcpcd_conf.stat.exists
+  when: bridge_ports and dhcpcd_conf.stat.exists
 - name: Restart dhcpcd
   service:
     name: dhcpcd

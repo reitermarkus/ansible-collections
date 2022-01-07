@@ -1,1 +1,2 @@
-lxc_host_bridge_ports: []
+# Create a `lxcbr0` bridge with these underlying ports.
+bridge_ports: []
