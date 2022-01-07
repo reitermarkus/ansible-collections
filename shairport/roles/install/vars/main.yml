@@ -6,3 +6,4 @@ nqptp_branch: development
 
 shairport_sync_repo: https://github.com/mikebrady/shairport-sync.git
 shairport_sync_branch: development
+shairport_user_service: false

@@ -6,7 +6,13 @@
 {{ group }} = {
   {%- for variable, value in variables.items() %}
 
-  {{ variable }} = {{ value | to_json }};
+  {{ variable }} = {% if value is string -%}
+      "{{ value }}"
+    {%- elif value is boolean -%}
+      "{{ 'yes' if value else 'no' }}"
+    {%- else -%}
+      {{ value }}
+    {%- endif%};
   {%- endfor %}
 
 };
