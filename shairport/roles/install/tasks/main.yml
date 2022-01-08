@@ -138,6 +138,7 @@
     dest: /usr/lib/systemd/user/shairport-sync.service
   become: yes
   when: shairport_user_service
+  changed_when: false
 - name: Adjust user config
   lineinfile:
     dest: /usr/lib/systemd/user/shairport-sync.service
@@ -158,6 +159,7 @@
       state: present
   become: yes
   when: shairport_user_service
+  changed_when: false
 - name: Enable avahi-daemon
   service:
     name: avahi-daemon
