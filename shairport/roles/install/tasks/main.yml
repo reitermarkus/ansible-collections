@@ -125,13 +125,7 @@
     state: absent
   when: build_dir.path is defined
   become: yes
-- name: Configure shairport-sync
-  template:
-    src: shairport-sync.conf.j2
-    dest: /etc/shairport-sync.conf
-  register: config
-  become: yes
-- name: Generate user config
+- name: Generate user service
   copy:
     src: /usr/lib/systemd/system/shairport-sync.service
     remote_src: true
@@ -139,7 +133,7 @@
   become: yes
   when: shairport_user_service
   changed_when: false
-- name: Adjust user config
+- name: Adjust user service
   lineinfile:
     dest: /usr/lib/systemd/user/shairport-sync.service
     state: '{{ item.state }}'
@@ -165,6 +159,12 @@
     name: avahi-daemon
     enabled: yes
     state: started
+  become: yes
+- name: Configure shairport-sync
+  template:
+    src: shairport-sync.conf.j2
+    dest: /etc/shairport-sync.conf
+  register: config
   become: yes
 - name: Start or restart shairport-sync
   systemd:
