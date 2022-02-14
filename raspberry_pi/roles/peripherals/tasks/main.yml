@@ -10,8 +10,12 @@
   lineinfile:
     line: i2c-dev
     dest: /etc/modules
-    state: '{{ "present" if spi else "absent" }}'
-  notify: Reboot
+    state: '{{ "present" if i2c else "absent" }}'
+- name: Load/unload I2C module
+  community.general.modprobe:
+    name: i2c-dev
+    state: '{{ "present" if i2c else "absent" }}'
+  when: i2c == True or i2c == False
 - name: Set up I2C
   when: i2c == True or i2c == False
   lineinfile:
