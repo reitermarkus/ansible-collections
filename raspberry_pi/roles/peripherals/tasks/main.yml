@@ -4,7 +4,18 @@
     regexp: dtparam=spi=
     line: dtparam=spi={{ "on" if spi else "off" }}
     dest: /boot/config.txt
-  notify: Reboot
+- name: Change SPI parameter
+  command: dtparam spi={{ "on" if spi else "off" }}
+  when: spi == True or spi == False
+- name: Set up I2C
+  when: i2c == True or i2c == False
+  lineinfile:
+    regexp: dtparam=i2c_arm=
+    line: dtparam=i2c_arm={{ "on" if i2c else "off" }}
+    dest: /boot/config.txt
+- name: Change I2C parameter
+  command: dtparam i2c_arm={{ "on" if i2c else "off" }}
+  when: i2c == True or i2c == False
 - name: Set up I2C module
   when: i2c == True or i2c == False
   lineinfile:
@@ -16,13 +27,6 @@
     name: i2c-dev
     state: '{{ "present" if i2c else "absent" }}'
   when: i2c == True or i2c == False
-- name: Set up I2C
-  when: i2c == True or i2c == False
-  lineinfile:
-    regexp: dtparam=i2c_arm=
-    line: dtparam=i2c_arm={{ "on" if i2c else "off" }}
-    dest: /boot/config.txt
-  notify: Reboot
 - name: Set up serial
   when: serial == True or serial == False
   lineinfile:
