@@ -7,6 +7,7 @@
 - name: Change SPI parameter
   command: dtparam spi={{ "on" if spi else "off" }}
   when: spi == True or spi == False
+  changed_when: false
 - name: Set up I2C
   when: i2c == True or i2c == False
   lineinfile:
@@ -16,6 +17,7 @@
 - name: Change I2C parameter
   command: dtparam i2c_arm={{ "on" if i2c else "off" }}
   when: i2c == True or i2c == False
+  changed_when: false
 - name: Set up I2C module
   when: i2c == True or i2c == False
   lineinfile:
