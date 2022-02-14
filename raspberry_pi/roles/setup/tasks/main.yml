@@ -18,6 +18,20 @@
     name: networking
     state: restarted
   when: hostname.changed
+- name: Install avahi-daemon
+  apt:
+    name: avahi-daemon
+- name: Restart avahi-daemon on DHCP update
+  copy:
+    content: |
+      case $reason in
+        BOUND|RENEW|REBIND|REBOOT)
+          systemctl restart avahi-daemon
+          ;;
+        *)
+          ;;
+      esac
+    dest: /etc/dhcpcd.exit-hook
 - name: Set up watchdog
   when: watchdog
   include_role:
