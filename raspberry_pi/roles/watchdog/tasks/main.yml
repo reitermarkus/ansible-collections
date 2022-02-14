@@ -1,6 +1,7 @@
 - name: Install requirements
   local_action: command ansible-galaxy install -r '{{ role_path }}/requirements.yml'
   become: no
+  changed_when: false
 - name: Enable watchdog module
   lineinfile:
     path: /etc/modules
