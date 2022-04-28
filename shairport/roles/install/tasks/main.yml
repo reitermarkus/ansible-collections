@@ -60,6 +60,11 @@
         --prefix=/usr \
         --with-systemd-startup
       make -j
+
+      # Remove previous version.
+      rm -f /usr/bin/nqptp
+      rm -f /usr/lib/systemd/system/nqptp.service
+
       make install
     chdir: '{{ build_dir.path }}/nqptp'
   when: nqptp_up_to_date.changed
@@ -115,6 +120,11 @@
         --with-systemd \
         --with-mqtt-client
       make -j
+
+      # Remove previous version.
+      rm -f /usr/bin/shairport-sync
+      rm -f /usr/lib/systemd/system/shairport-sync.service
+
       make install
     chdir: '{{ build_dir.path }}/shairport-sync'
   when: shairport_sync_up_to_date.changed
