@@ -12,7 +12,7 @@
     - libtool
     - '{{ "util-linux-libs" if ansible_os_family == "Archlinux" else "uuid-dev" }}'
     - xxd
-    - '{{ "pulseaudio" if ansible_os_family == "Archlinux" else "libpulse-dev" }}'
+    - '{{ "pipewire-pulse" if ansible_os_family == "Archlinux" else "libpulse-dev" }}'
     - '{{ "alsa-lib" if ansible_os_family == "Archlinux" else "libasound2-dev" }}'
     - '{{ "avahi" if ansible_os_family == "Archlinux" else "libavahi-client-dev" }}'
     - '{{ "ffmpeg4.4" if ansible_os_family == "Archlinux" else "libavcodec-dev" }}'
