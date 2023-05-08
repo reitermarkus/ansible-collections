@@ -105,7 +105,7 @@
   shell:
     cmd: |
       {% if ansible_os_family == "Archlinux" -%}
-      export PKG_CONFIG_PATH="/usr/lib/ffmpeg4.4/pkgconfig/:$PKG_CONFIG_PATH"
+      export PKG_CONFIG_PATH="/usr/lib/ffmpeg4.4/pkgconfig:$PKG_CONFIG_PATH"
       {%- endif %}
 
       autoreconf -fi
