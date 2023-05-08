@@ -104,9 +104,7 @@
 - name: Build shairport-sync
   shell:
     cmd: |
-      if {{ ansible_os_family == "Archlinux" }}; then
-        export PKG_CONFIG_PATH="/usr/lib/ffmpeg4.4/pkgconfig/:$PKG_CONFIG_PATH"
-      fi
+      {{ 'export PKG_CONFIG_PATH="/usr/lib/ffmpeg4.4/pkgconfig/:$PKG_CONFIG_PATH"' if ansible_os_family == "Archlinux" else '' }}
 
       autoreconf -fi
       ./configure \
