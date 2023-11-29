@@ -3,7 +3,7 @@
   become: no
 - name: Enable unattended upgrades
   include_role:
-    name: jnv.unattended-upgrades
+    name: hifis.unattended_upgrades
 - name: Set time zone
   when: timezone
   community.general.timezone:
