@@ -1,2 +1,2 @@
 roles:
-  - name: jnv.unattended-upgrades
+  - name: hifis.unattended_upgrades
