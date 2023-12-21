@@ -2,14 +2,6 @@
   local_action: command ansible-galaxy install -r '{{ role_path }}/requirements.yml'
   become: no
   changed_when: false
-- name: Enable watchdog module
-  lineinfile:
-    line: bcm2835_wdt
-    dest: /etc/modules
-- name: Load watchdog module
-  community.general.modprobe:
-    name: bcm2835_wdt
-    state: present
 - name: Install watchdog
   include_role:
     name: whiskerlabs.watchdog
