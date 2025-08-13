@@ -22,6 +22,7 @@
     - '{{ "libgcrypt" if ansible_os_family == "Archlinux" else "libgcrypt-dev" }}'
     - '{{ "mosquitto" if ansible_os_family == "Archlinux" else "libmosquitto-dev" }}'
     - '{{ "libplist" if ansible_os_family == "Archlinux" else "libplist-dev" }}'
+    - '{{ "" if ansible_os_family == "Archlinux" else "libplist-utils" }}'
     - '{{ "popt" if ansible_os_family == "Archlinux" else "libpopt-dev" }}'
     - '{{ "libsndfile" if ansible_os_family == "Archlinux" else "libsndfile1-dev" }}'
     - '{{ "libsodium" if ansible_os_family == "Archlinux" else "libsodium-dev" }}'
