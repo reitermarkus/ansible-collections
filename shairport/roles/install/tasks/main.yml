@@ -28,7 +28,7 @@
     - '{{ "libsodium" if ansible_os_family == "Archlinux" else "libsodium-dev" }}'
     - '{{ "libsoxr" if ansible_os_family == "Archlinux" else "libsoxr-dev" }}'
     - '{{ "openssl" if ansible_os_family == "Archlinux" else "libssl-dev" }}'
-  become: yes
+  become: true
 - name: Check if nqptp is up-to-date
   shell: nqptp -V 2>/dev/null | grep -o "g$(git ls-remote "{{ nqptp_repo }}" "refs/heads/{{ nqptp_branch }}" | cut -c -7)"
   register: nqptp_up_to_date
@@ -50,7 +50,7 @@
   git:
     repo: '{{ nqptp_repo }}'
     dest: '{{ build_dir.path }}/nqptp'
-    single_branch: yes
+    single_branch: true
     version: '{{ nqptp_branch }}'
   when: nqptp_up_to_date.changed
 - name: Build nqptp
@@ -69,18 +69,18 @@
       make install
     chdir: '{{ build_dir.path }}/nqptp'
   when: nqptp_up_to_date.changed
-  become: yes
+  become: true
 - name: Enable nqptp service
   service:
     name: nqptp
     enabled: true
     state: started
-  become: yes
+  become: true
 - name: Clone alac repo
   git:
     repo: '{{ alac_repo }}'
     dest: '{{ build_dir.path }}/alac'
-    single_branch: yes
+    single_branch: true
     version: '{{ alac_branch }}'
   when: shairport_sync_up_to_date.changed
 - name: Build libalac
@@ -94,12 +94,12 @@
       ldconfig
     chdir: '{{ build_dir.path }}/alac'
   when: shairport_sync_up_to_date.changed
-  become: yes
+  become: true
 - name: Clone shairport-sync repo
   git:
     repo: '{{ shairport_sync_repo }}'
     dest: '{{ build_dir.path }}/shairport-sync'
-    single_branch: yes
+    single_branch: true
     version: '{{ shairport_sync_branch }}'
   when: shairport_sync_up_to_date.changed
 - name: Build shairport-sync
@@ -121,9 +121,9 @@
         --with-pkg-config \
         --with-ssl=openssl \
         --with-metadata \
-        --with-pa \
+        --with-pulseaudio \
         --with-soxr \
-        --with-systemd \
+        --with-systemd-startup \
         --with-mqtt-client
       make -j
 
@@ -134,19 +134,19 @@
       make install
     chdir: '{{ build_dir.path }}/shairport-sync'
   when: shairport_sync_up_to_date.changed
-  become: yes
+  become: true
 - name: Delete build directory
   file:
     path: '{{ build_dir.path }}'
     state: absent
   when: build_dir.path is defined
-  become: yes
+  become: true
 - name: Generate user service
   copy:
     src: /usr/lib/systemd/system/shairport-sync.service
     remote_src: true
     dest: /usr/lib/systemd/user/shairport-sync.service
-  become: yes
+  become: true
   when: shairport_user_service
   changed_when: false
 - name: Adjust user service
@@ -167,21 +167,21 @@
     - regex: WantedBy=
       line: WantedBy=default.target
       state: present
-  become: yes
+  become: true
   when: shairport_user_service
   changed_when: false
 - name: Enable avahi-daemon
   service:
     name: avahi-daemon
-    enabled: yes
+    enabled: true
     state: started
-  become: yes
+  become: true
 - name: Configure shairport-sync
   template:
     src: shairport-sync.conf.j2
     dest: /etc/shairport-sync.conf
   register: config
-  become: yes
+  become: true
 - name: Start or restart shairport-sync
   systemd:
     name: shairport-sync
