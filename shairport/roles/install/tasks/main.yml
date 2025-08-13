@@ -28,6 +28,7 @@
     - '{{ "libsodium" if ansible_os_family == "Archlinux" else "libsodium-dev" }}'
     - '{{ "libsoxr" if ansible_os_family == "Archlinux" else "libsoxr-dev" }}'
     - '{{ "openssl" if ansible_os_family == "Archlinux" else "libssl-dev" }}'
+    - '{{ "" if ansible_os_family == "Archlinux" else "systemd-dev" }}'
   become: true
 - name: Check if nqptp is up-to-date
   shell: nqptp -V 2>/dev/null | grep -o "g$(git ls-remote "{{ nqptp_repo }}" "refs/heads/{{ nqptp_branch }}" | cut -c -7)"
@@ -76,25 +77,6 @@
     enabled: true
     state: started
   become: true
-- name: Clone alac repo
-  git:
-    repo: '{{ alac_repo }}'
-    dest: '{{ build_dir.path }}/alac'
-    single_branch: true
-    version: '{{ alac_branch }}'
-  when: shairport_sync_up_to_date.changed
-- name: Build libalac
-  shell:
-    cmd: |
-      autoreconf -fi
-      ./configure \
-        --prefix=/usr
-      make -j
-      make install
-      ldconfig
-    chdir: '{{ build_dir.path }}/alac'
-  when: shairport_sync_up_to_date.changed
-  become: true
 - name: Clone shairport-sync repo
   git:
     repo: '{{ shairport_sync_repo }}'
@@ -115,7 +97,6 @@
         --sysconfdir=/etc \
         --with-alsa \
         --with-airplay-2 \
-        --with-apple-alac \
         --with-avahi \
         --with-convolution \
         --with-pkg-config \
