@@ -1,4 +1,4 @@
 i2c: ~
 spi: ~
-serial: ~
+uart: ~
 serial_console: ~

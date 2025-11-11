@@ -1,5 +1,5 @@
 timezone: ~
 i2c: ~
 spi: ~
-serial: ~
+uart: ~
 watchdog: ~
