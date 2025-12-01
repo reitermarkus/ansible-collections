@@ -15,7 +15,7 @@
     path: /etc/network/interfaces.d/lxc
     state: absent
   register: delete_lxc_host_bridge
-  when: not bridge_ports
+  when: bridge_ports is not defined
 - name: Create lxc host bridge
   copy:
     content: |
@@ -27,7 +27,7 @@
         bridge_maxwait 0
     dest: /etc/network/interfaces.d/lxc
   register: create_lxc_host_bridge
-  when: bridge_ports
+  when: bridge_ports is defined
 - name: Check if dhcpcd config exists
   stat:
     path: /etc/dhcpcd.conf
@@ -40,7 +40,7 @@
     line: denyinterfaces {{ bridge_ports | join(' ') }} lxcbr0
     path: /etc/dhcpcd.conf
   register: dhcpcd_conf
-  when: bridge_ports and dhcpcd_conf.stat.exists
+  when: bridge_ports is defined and dhcpcd_conf.stat.exists
 - name: Restart dhcpcd
   service:
     name: dhcpcd
