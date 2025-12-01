@@ -5,7 +5,7 @@
   include_role:
     name: hifis.unattended_upgrades
 - name: Set time zone
-  when: timezone
+  when: timezone is defined
   community.general.timezone:
     name: '{{ timezone }}'
 - name: Set up hostname
