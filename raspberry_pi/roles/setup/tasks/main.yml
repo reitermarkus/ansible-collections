@@ -33,7 +33,7 @@
       esac
     dest: /etc/dhcpcd.exit-hook
 - name: Set up watchdog
-  when: watchdog
+  when: watchdog is defined and watchdog
   include_role:
     name: reitermarkus.raspberry_pi.watchdog
 - name: Set up peripherals
