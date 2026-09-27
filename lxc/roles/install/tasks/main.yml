@@ -30,6 +30,11 @@
     dest: /etc/network/interfaces.d/lxc
   register: create_lxc_host_bridge
   when: bridge_ports is defined
+- name: Source LXC interfaces
+  lineinfile:
+    line: source /etc/network/interfaces.d/lxc
+    path: /etc/network/interfaces
+  when: ansible_facts['os_family'] == 'Alpine'
 - name: Check if dhcpcd config exists
   stat:
     path: /etc/dhcpcd.conf
