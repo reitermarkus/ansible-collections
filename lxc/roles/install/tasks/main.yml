@@ -18,6 +18,10 @@
     state: absent
   register: delete_lxc_host_bridge
   when: bridge_ports is not defined
+- name: Create network interfaces directory
+  ansible.builtin.file:
+    path: /etc/network/interfaces.d
+    state: directory
 - name: Create lxc host bridge
   copy:
     content: |
