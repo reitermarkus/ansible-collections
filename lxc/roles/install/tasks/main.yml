@@ -10,7 +10,7 @@
     line: USE_LXC_BRIDGE="{{ 'false' if bridge_ports else 'true' }}"
     path: /etc/default/lxc-net
     create: true
-- name: Delete lxc host bridge
+- name: Delete LXC host bridge
   file:
     path: /etc/network/interfaces.d/lxc
     state: absent
@@ -20,7 +20,14 @@
   ansible.builtin.file:
     path: /etc/network/interfaces.d
     state: directory
-- name: Create lxc host bridge
+- name: Disable bridge port interfaces
+  replace:
+    dest: /etc/network/interfaces
+    regexp: '^auto {{ item }}'
+    replace: '#auto {{ item }}'
+  loop: '{{ bridge_ports }}'
+  when: bridge_ports is defined
+- name: Create LXC host bridge
   copy:
     content: |
       auto lxcbr0
