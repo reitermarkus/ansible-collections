@@ -1,10 +1,11 @@
 ---
 - name: Install dependencies
-  apt:
-    pkg:
-      - lxc
-      - python3-lxc
-    update_cache: yes
+  ansible.builtin.package:
+    name: lxc      
+- name: Install Python dependencies
+  ansible.builtin.apt:
+    pkg: python3-lxc
+  when: ansible_facts['os_family'] == 'Debian'
 - name: Configure lxc-net bridge
   lineinfile:
     regex: USE_LXC_BRIDGE=
