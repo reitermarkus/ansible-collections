@@ -11,6 +11,7 @@
     regex: USE_LXC_BRIDGE=
     line: USE_LXC_BRIDGE="{{ 'false' if bridge_ports else 'true' }}"
     path: /etc/default/lxc-net
+    create: true
 - name: Delete lxc host bridge
   file:
     path: /etc/network/interfaces.d/lxc
