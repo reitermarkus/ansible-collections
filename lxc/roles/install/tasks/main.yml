@@ -27,6 +27,13 @@
     replace: '#auto {{ item }}'
   loop: '{{ bridge_ports }}'
   when: bridge_ports is defined
+- name: Disable bridge port interfaces
+  replace:
+    dest: /etc/network/interfaces
+    regexp: '^iface {{ item }} '
+    replace: '#iface {{ item }} '
+  loop: '{{ bridge_ports }}'
+  when: bridge_ports is defined
 - name: Create LXC host bridge
   copy:
     content: |
