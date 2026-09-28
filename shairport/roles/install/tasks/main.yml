@@ -121,7 +121,7 @@
         --with-metadata \
         --with-pulseaudio \
         --with-soxr \
-        --with-systemd-startup \
+        {% if ansible_facts['os_family'] != 'Alpine' %}--with-systemd-startup{% endif %} \
         --with-mqtt-client
       make -j
 
@@ -133,6 +133,24 @@
     chdir: '{{ build_dir.path }}/shairport-sync'
   when: shairport_sync_up_to_date.changed
   become: true
+- name: Install shairport-sync service
+  copy:
+    content: |
+      #!/sbin/openrc-run
+
+      name="Shairport Sync"
+      pidfile="/run/${RC_SVCNAME}.pid"
+      command="/usr/bin/shairport-sync"
+      supervisor="supervise-daemon"
+      output_log="/var/log/${RC_SVCNAME}.log"
+      error_log="/var/log/${RC_SVCNAME}.log"
+
+      depend() {
+        need net localmount avahi-daemon
+      }
+    dest: /usr/etc/init.d/shairport-sync
+    mode: 0755
+  when: ansible_facts['os_family'] == 'Alpine'
 - name: Delete build directory
   file:
     path: '{{ build_dir.path }}'
@@ -145,7 +163,7 @@
     remote_src: true
     dest: /usr/lib/systemd/user/shairport-sync.service
   become: true
-  when: shairport_user_service
+  when: shairport_user_service and ansible_facts['os_family'] != 'Alpine'
   changed_when: false
 - name: Adjust user service
   lineinfile:
@@ -166,7 +184,7 @@
       line: WantedBy=default.target
       state: present
   become: true
-  when: shairport_user_service
+  when: shairport_user_service and ansible_facts['os_family'] != 'Alpine'
   changed_when: false
 - name: Enable avahi-daemon
   service:
