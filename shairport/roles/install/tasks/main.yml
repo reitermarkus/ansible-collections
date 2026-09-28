@@ -60,7 +60,7 @@
       autoreconf -fi
       ./configure \
         --prefix=/usr \
-        --with-systemd-startup
+        --with-{{ 'freebsd' if ansible_facts['os_family'] == 'Alpine' else 'systemd' }}-startup
       make -j
 
       # Remove previous version.
