@@ -22,13 +22,13 @@
     - "{{ 'libgcrypt' if ansible_facts['os_family'] == 'Archlinux' else 'libgcrypt-dev' }}"
     - "{{ 'mosquitto' if ansible_facts['os_family'] == 'Archlinux' else 'mosquitto-dev' if ansible_facts['os_family'] == 'Alpine' else 'libmosquitto-dev' }}"
     - "{{ 'libplist' if ansible_facts['os_family'] == 'Archlinux' else 'libplist-dev' }}"
-    - "{{ [] if ansible_facts['os_family'] in ['Archlinux', 'Alpine'] else 'libplist-utils' }}"
+    - "{{ 'libplist' if ansible_facts['os_family'] == 'Archlinux' else 'libplist-util' if ansible_facts['os_family'] == 'Alpine' else 'libplist-utils' }}"
     - "{{ 'popt' if ansible_facts['os_family'] == 'Archlinux' else 'popt-dev' if ansible_facts['os_family'] == 'Alpine' else 'libpopt-dev' }}"
     - "{{ 'libsndfile' if ansible_facts['os_family'] == 'Archlinux' else 'libsndfile-dev' if ansible_facts['os_family'] == 'Alpine' else 'libsndfile1-dev' }}"
     - "{{ 'libsodium' if ansible_facts['os_family'] == 'Archlinux' else 'libsodium-dev' }}"
     - "{{ 'libsoxr' if ansible_facts['os_family'] == 'Archlinux' else 'soxr-dev' if ansible_facts['os_family'] == 'Alpine' else 'libsoxr-dev' }}"
     - "{{ 'openssl' if ansible_facts['os_family'] == 'Archlinux' else 'openssl-dev' if ansible_facts['os_family'] == 'Alpine' else 'libssl-dev' }}"
-    - "{{ [] if ansible_facts['os_family'] in ['Archlinux', 'Alpine'] else 'systemd-dev' }}"
+    - "{{ 'openssl' if ansible_facts['os_family'] == 'Archlinux' else 'openssl-dev' if ansible_facts['os_family'] == 'Alpine' else 'systemd-dev' }}"
   become: true
 - name: Check if nqptp is up-to-date
   shell: nqptp -V 2>/dev/null | grep -o "g$(git ls-remote '{{ nqptp_repo }}' "refs/heads/{{ nqptp_branch }}" | cut -c -7)"
