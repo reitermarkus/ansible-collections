@@ -6,7 +6,7 @@
     - autoconf
     - automake
     - "{{ 'avahi' if ansible_facts['os_family'] in ['Archlinux', 'Alpine'] else 'avahi-daemon' }}"
-    - "{{ 'base-devel' if ansible_facts['os_family'] == 'Archlinux' else [] if ansible_facts['os_family'] == 'Alpine' else 'build-essential' }}"
+    - "{{ 'base-devel' if ansible_facts['os_family'] == 'Archlinux' else 'build-base' if ansible_facts['os_family'] == 'Alpine' else 'build-essential' }}"
     - ca-certificates
     - git
     - libtool
