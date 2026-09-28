@@ -27,7 +27,7 @@
     - "{{ 'libsndfile' if ansible_facts['os_family'] == 'Archlinux' else 'libsndfile-dev' if ansible_facts['os_family'] == 'Alpine' else 'libsndfile1-dev' }}"
     - "{{ 'libsodium' if ansible_facts['os_family'] == 'Archlinux' else 'libsodium-dev' }}"
     - "{{ 'libsoxr' if ansible_facts['os_family'] == 'Archlinux' else 'soxr-dev' if ansible_facts['os_family'] == 'Alpine' else 'libsoxr-dev' }}"
-    - "{{ 'openssl' if ansible_facts['os_family'] == 'Archlinux' else 'openssl-dev' ansible_facts['os_family'] == 'Alpine' else 'libssl-dev' }}"
+    - "{{ 'openssl' if ansible_facts['os_family'] == 'Archlinux' else 'openssl-dev' if ansible_facts['os_family'] == 'Alpine' else 'libssl-dev' }}"
     - "{{ '' if ansible_facts['os_family'] in ['Archlinux', 'Alpine'] else 'systemd-dev' }}"
   become: true
 - name: Check if nqptp is up-to-date
