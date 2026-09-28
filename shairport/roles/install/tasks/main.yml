@@ -6,23 +6,23 @@
     - autoconf
     - automake
     - "{{ 'avahi' if ansible_facts['os_family'] in ['Archlinux', 'Alpine'] else 'avahi-daemon' }}"
-    - "{{ 'base-devel' if ansible_facts['os_family'] == 'Archlinux' else 'build-essential' }}"
+    - "{{ 'base-devel' if ansible_facts['os_family'] == 'Archlinux' else [] if ansible_facts['os_family'] == 'Alpine' else 'build-essential' }}"
     - ca-certificates
     - git
     - libtool
     - "{{ 'util-linux-libs' if ansible_facts['os_family'] == 'Archlinux' else 'util-linux-dev' if ansible_facts['os_family'] == 'Alpine' else 'uuid-dev' }}"
     - xxd
-    - "{{ 'pipewire-pulse' if ansible_facts['os_family'] == 'Archlinux' else 'libpulse-dev' }}"
-    - "{{ 'alsa-lib' if ansible_facts['os_family'] == 'Archlinux' else 'libasound2-dev' }}"
-    - "{{ 'avahi' if ansible_facts['os_family'] == 'Archlinux' else 'libavahi-client-dev' }}"
-    - "{{ 'ffmpeg4.4' if ansible_facts['os_family'] == 'Archlinux' else 'ffmpeg4' if ansible_facts['os_family'] == 'Alpine' else 'libavcodec-dev' }}"
-    - "{{ 'ffmpeg4.4' if ansible_facts['os_family'] == 'Archlinux' else 'ffmpeg4' if ansible_facts['os_family'] == 'Alpine' else 'libavformat-dev' }}"
-    - "{{ 'ffmpeg4.4' if ansible_facts['os_family'] == 'Archlinux' else 'ffmpeg4' if ansible_facts['os_family'] == 'Alpine' else 'libavutil-dev' }}"
+    - "{{ 'pipewire-pulse' if ansible_facts['os_family'] in ['Archlinux', 'Alpine'] else 'libpulse-dev' }}"
+    - "{{ 'alsa-lib' if ansible_facts['os_family'] == 'Archlinux' else 'alsa-lib-dev' if ansible_facts['os_family'] == 'Alpine' else 'libasound2-dev' }}"
+    - "{{ 'avahi' if ansible_facts['os_family'] == 'Archlinux' else 'avahi-dev' if ansible_facts['os_family'] == 'Alpine' else 'libavahi-client-dev' }}"
+    - "{{ 'ffmpeg4.4' if ansible_facts['os_family'] == 'Archlinux' else 'ffmpeg' if ansible_facts['os_family'] == 'Alpine' else 'libavcodec-dev' }}"
+    - "{{ 'ffmpeg4.4' if ansible_facts['os_family'] == 'Archlinux' else 'ffmpeg' if ansible_facts['os_family'] == 'Alpine' else 'libavformat-dev' }}"
+    - "{{ 'ffmpeg4.4' if ansible_facts['os_family'] == 'Archlinux' else 'ffmpeg' if ansible_facts['os_family'] == 'Alpine' else 'libavutil-dev' }}"
     - "{{ 'libconfig' if ansible_facts['os_family'] == 'Archlinux' else 'libconfig-dev' }}"
     - "{{ 'libgcrypt' if ansible_facts['os_family'] == 'Archlinux' else 'libgcrypt-dev' }}"
     - "{{ 'mosquitto' if ansible_facts['os_family'] == 'Archlinux' else 'mosquitto-dev' if ansible_facts['os_family'] == 'Alpine' else 'libmosquitto-dev' }}"
     - "{{ 'libplist' if ansible_facts['os_family'] == 'Archlinux' else 'libplist-dev' }}"
-    - "{{ [] if ansible_facts['os_family'] == 'Archlinux' else 'libplist-utils' }}"
+    - "{{ [] if ansible_facts['os_family'] in ['Archlinux', 'Alpine'] else 'libplist-utils' }}"
     - "{{ 'popt' if ansible_facts['os_family'] == 'Archlinux' else 'popt-dev' if ansible_facts['os_family'] == 'Alpine' else 'libpopt-dev' }}"
     - "{{ 'libsndfile' if ansible_facts['os_family'] == 'Archlinux' else 'libsndfile-dev' if ansible_facts['os_family'] == 'Alpine' else 'libsndfile1-dev' }}"
     - "{{ 'libsodium' if ansible_facts['os_family'] == 'Archlinux' else 'libsodium-dev' }}"
