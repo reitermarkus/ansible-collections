@@ -59,8 +59,7 @@
     cmd: |
       autoreconf -fi
       ./configure \
-        --prefix=/usr \
-        --with-{{ 'freebsd' if ansible_facts['os_family'] == 'Alpine' else 'systemd' }}-startup
+        --prefix=/usr {% if ansible_facts['os_family'] != 'Alpine' %}--with-systemd-startup{% endif %}
       make -j
 
       # Remove previous version.
@@ -71,6 +70,20 @@
     chdir: '{{ build_dir.path }}/nqptp'
   when: nqptp_up_to_date.changed
   become: true
+- name: Install nqptp service
+  copy:
+    content: |
+      #!/sbin/openrc-run
+
+      name="NQPTP"
+      pidfile="/run/${RC_SVCNAME}.pid"
+      command="/usr/bin/nqptp"
+      supervisor="supervise-daemon"
+      output_log="/var/log/${RC_SVCNAME}.log"
+      error_log="/var/log/${RC_SVCNAME}.log"
+    dest: /usr/etc/init.d/nqptp
+    mode: 0755
+  when: ansible_facts['os_family'] == 'Alpine'
 - name: Enable nqptp service
   service:
     name: nqptp
