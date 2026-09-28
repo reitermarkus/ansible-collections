@@ -5,39 +5,39 @@
     - alsa-utils
     - autoconf
     - automake
-    - '{{ "avahi" if ansible_os_family in ["Archlinux", "Alpine"] else "avahi-daemon" }}'
-    - '{{ "base-devel" if ansible_os_family == "Archlinux" else "build-essential" }}'
+    - "{{ 'avahi' if ansible_facts['os_family'] in ['Archlinux', 'Alpine'] else 'avahi-daemon' }}"
+    - "{{ 'base-devel' if ansible_facts['os_family'] == 'Archlinux' else 'build-essential' }}"
     - ca-certificates
     - git
     - libtool
-    - '{{ "util-linux-libs" if ansible_os_family == "Archlinux" else "util-linux-dev" if ansible_os_family == "Alpine" else "uuid-dev" }}'
+    - "{{ 'util-linux-libs' if ansible_facts['os_family'] == 'Archlinux' else 'util-linux-dev' if ansible_facts['os_family'] == 'Alpine' else 'uuid-dev' }}"
     - xxd
-    - '{{ "pipewire-pulse" if ansible_os_family == "Archlinux" else "libpulse-dev" }}'
-    - '{{ "alsa-lib" if ansible_os_family == "Archlinux" else "libasound2-dev" }}'
-    - '{{ "avahi" if ansible_os_family == "Archlinux" else "libavahi-client-dev" }}'
-    - '{{ "ffmpeg4.4" if ansible_os_family == "Archlinux" else "ffmpeg4" if ansible_os_family == "Alpine" else "libavcodec-dev" }}'
-    - '{{ "ffmpeg4.4" if ansible_os_family == "Archlinux" else "ffmpeg4" if ansible_os_family == "Alpine" else "libavformat-dev" }}'
-    - '{{ "ffmpeg4.4" if ansible_os_family == "Archlinux" else "ffmpeg4" if ansible_os_family == "Alpine" else "libavutil-dev" }}'
-    - '{{ "libconfig" if ansible_os_family == "Archlinux" else "libconfig-dev" }}'
-    - '{{ "libgcrypt" if ansible_os_family == "Archlinux" else "libgcrypt-dev" }}'
-    - '{{ "mosquitto" if ansible_os_family == "Archlinux" else "mosquitto-dev" if ansible_os_family == "Alpine" else "libmosquitto-dev" }}'
-    - '{{ "libplist" if ansible_os_family == "Archlinux" else "libplist-dev" }}'
-    - '{{ "" if ansible_os_family == "Archlinux" else "libplist-utils" }}'
-    - '{{ "popt" if ansible_os_family == "Archlinux" else "popt-dev" if ansible_os_family == "Alpine" else "libpopt-dev" }}'
-    - '{{ "libsndfile" if ansible_os_family == "Archlinux" else "libsndfile-dev" if ansible_os_family == "Alpine" else "libsndfile1-dev" }}'
-    - '{{ "libsodium" if ansible_os_family == "Archlinux" else "libsodium-dev" }}'
-    - '{{ "libsoxr" if ansible_os_family == "Archlinux" else "soxr-dev" if ansible_os_family == "Alpine" else "libsoxr-dev" }}'
-    - '{{ "openssl" if ansible_os_family == "Archlinux" else "openssl-dev" ansible_os_family == "Alpine" else "libssl-dev" }}'
-    - '{{ "" if ansible_os_family in ["Archlinux", "Alpine"] else "systemd-dev" }}'
+    - "{{ 'pipewire-pulse' if ansible_facts['os_family'] == 'Archlinux' else 'libpulse-dev' }}"
+    - "{{ 'alsa-lib' if ansible_facts['os_family'] == 'Archlinux' else 'libasound2-dev' }}"
+    - "{{ 'avahi' if ansible_facts['os_family'] == 'Archlinux' else 'libavahi-client-dev' }}"
+    - "{{ 'ffmpeg4.4' if ansible_facts['os_family'] == 'Archlinux' else 'ffmpeg4' if ansible_facts['os_family'] == 'Alpine' else 'libavcodec-dev' }}"
+    - "{{ 'ffmpeg4.4' if ansible_facts['os_family'] == 'Archlinux' else 'ffmpeg4' if ansible_facts['os_family'] == 'Alpine' else 'libavformat-dev' }}"
+    - "{{ 'ffmpeg4.4' if ansible_facts['os_family'] == 'Archlinux' else 'ffmpeg4' if ansible_facts['os_family'] == 'Alpine' else 'libavutil-dev' }}"
+    - "{{ 'libconfig' if ansible_facts['os_family'] == 'Archlinux' else 'libconfig-dev' }}"
+    - "{{ 'libgcrypt' if ansible_facts['os_family'] == 'Archlinux' else 'libgcrypt-dev' }}"
+    - "{{ 'mosquitto' if ansible_facts['os_family'] == 'Archlinux' else 'mosquitto-dev' if ansible_facts['os_family'] == 'Alpine' else 'libmosquitto-dev' }}"
+    - "{{ 'libplist' if ansible_facts['os_family'] == 'Archlinux' else 'libplist-dev' }}"
+    - "{{ '' if ansible_facts['os_family'] == 'Archlinux' else 'libplist-utils' }}"
+    - "{{ 'popt' if ansible_facts['os_family'] == 'Archlinux' else 'popt-dev' if ansible_facts['os_family'] == 'Alpine' else 'libpopt-dev' }}"
+    - "{{ 'libsndfile' if ansible_facts['os_family'] == 'Archlinux' else 'libsndfile-dev' if ansible_facts['os_family'] == 'Alpine' else 'libsndfile1-dev' }}"
+    - "{{ 'libsodium' if ansible_facts['os_family'] == 'Archlinux' else 'libsodium-dev' }}"
+    - "{{ 'libsoxr' if ansible_facts['os_family'] == 'Archlinux' else 'soxr-dev' if ansible_facts['os_family'] == 'Alpine' else 'libsoxr-dev' }}"
+    - "{{ 'openssl' if ansible_facts['os_family'] == 'Archlinux' else 'openssl-dev' ansible_facts['os_family'] == 'Alpine' else 'libssl-dev' }}"
+    - "{{ '' if ansible_facts['os_family'] in ['Archlinux', 'Alpine'] else 'systemd-dev' }}"
   become: true
 - name: Check if nqptp is up-to-date
-  shell: nqptp -V 2>/dev/null | grep -o "g$(git ls-remote "{{ nqptp_repo }}" "refs/heads/{{ nqptp_branch }}" | cut -c -7)"
+  shell: nqptp -V 2>/dev/null | grep -o "g$(git ls-remote '{{ nqptp_repo }}' "refs/heads/{{ nqptp_branch }}" | cut -c -7)"
   register: nqptp_up_to_date
   ignore_errors: true
   failed_when: nqptp_up_to_date.stdout | length != 8
   changed_when: nqptp_up_to_date.rc != 0
 - name: Check if shairport-sync is up-to-date
-  shell: shairport-sync -V 2>/dev/null | grep -o "g$(git ls-remote "{{ shairport_sync_repo }}" "refs/heads/{{ shairport_sync_branch }}" | cut -c -7)"
+  shell: shairport-sync -V 2>/dev/null | grep -o "g$(git ls-remote '{{ shairport_sync_repo }}' 'refs/heads/{{ shairport_sync_branch }}' | cut -c -7)"
   register: shairport_sync_up_to_date
   ignore_errors: true
   failed_when: shairport_sync_up_to_date.stdout | length != 8
@@ -87,7 +87,7 @@
 - name: Build shairport-sync
   shell:
     cmd: |
-      {% if ansible_os_family == "Archlinux" -%}
+      {% if ansible_facts['os_family'] == 'Archlinux' -%}
       export PKG_CONFIG_PATH="/usr/lib/ffmpeg4.4/pkgconfig:$PKG_CONFIG_PATH"
       {%- endif %}
 
@@ -167,6 +167,6 @@
   systemd:
     name: shairport-sync
     enabled: true
-    state: '{{ "restarted" if (shairport_sync_up_to_date.changed or config.changed) else "started" }}'
-    scope: '{{ "user" if shairport_user_service else "system" }}'
+    state: "{{ 'restarted' if (shairport_sync_up_to_date.changed or config.changed) else 'started' }}"
+    scope: "{{ 'user' if shairport_user_service else 'system' }}"
   become: '{{ not shairport_user_service }}'
