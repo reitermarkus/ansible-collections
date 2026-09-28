@@ -81,6 +81,10 @@
       supervisor="supervise-daemon"
       output_log="/var/log/${RC_SVCNAME}.log"
       error_log="/var/log/${RC_SVCNAME}.log"
+
+      depend() {
+        use net
+      }
     dest: /usr/etc/init.d/nqptp
     mode: 0755
   when: ansible_facts['os_family'] == 'Alpine'
