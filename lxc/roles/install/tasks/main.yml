@@ -75,3 +75,8 @@
     name: networking
     state: restarted
   when: delete_lxc_host_bridge.changed or create_lxc_host_bridge.changed
+- name: Enable lxc service
+  ansible.builtin.service:
+    name: lxc
+    enabled: true
+    state: started
