@@ -120,7 +120,7 @@
         --with-airplay-2 \
         --with-avahi \
         --with-convolution \
-        --with-pkg-config \
+        {% if ansible_facts['os_family'] != 'Alpine' %}--with-pkg-config{% endif %} \
         --with-ssl=openssl \
         --with-metadata \
         --with-pulseaudio \
