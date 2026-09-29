@@ -70,6 +70,10 @@
     chdir: '{{ build_dir.path }}/nqptp'
   when: nqptp_up_to_date.changed
   become: true
+- name: Create init directory
+  ansible.builtin.file:
+    path: /usr/etc/init.d
+    state: directory
 - name: Install nqptp service
   copy:
     content: |
