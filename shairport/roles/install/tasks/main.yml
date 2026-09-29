@@ -209,3 +209,10 @@
     state: "{{ 'restarted' if (shairport_sync_up_to_date.changed or config.changed) else 'started' }}"
     scope: "{{ 'user' if shairport_user_service else 'system' }}"
   become: '{{ not shairport_user_service }}'
+  when: shairport_user_service and ansible_facts['os_family'] != 'Alpine'
+- name: Start or restart shairport-sync
+  service:
+    name: shairport-sync
+    enabled: true
+    state: "{{ 'restarted' if (shairport_sync_up_to_date.changed or config.changed) else 'started' }}"
+  when: shairport_user_service and ansible_facts['os_family'] == 'Alpine'
